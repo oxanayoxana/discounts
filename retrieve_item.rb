@@ -7,7 +7,6 @@ class RetrieveItem
 
   def initialize
     @products = RetrieveProducts.new('products.yml')
-    @item = item
   end
 
   def scan(product_code)

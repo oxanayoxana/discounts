@@ -22,7 +22,7 @@ class PromotionalRules
   end
 
   def two_discounts
-    return if over_max_price? && total_individual_items >= 2
+    over_max_price? && total_individual_items >= 2
   end
 
   def check_10_discount
@@ -46,7 +46,7 @@ class PromotionalRules
   end
 
   def over_max_price?
-    return if basket_prices > MAX_PRICE
+    basket_prices > MAX_PRICE
   end
 
   def total_individual_items

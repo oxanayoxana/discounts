@@ -3,6 +3,9 @@
 require_relative 'retrieve_item.rb'
 
 class Basket
+  NEW_ITEM_PRICE = 8.50
+  DISCOUNTED_ITEM = 'Lavender heart'
+
   attr_reader :my_item, :item, :basket, :basket_prices
 
   def initialize
@@ -30,19 +33,11 @@ class Basket
     @basket_prices = prices.flatten.reduce(:+).round(1)
   end
 
-  def individual_item
-    'Lavender heart'
-  end
-
-  def individual_price
-    8.50
-  end
-
   def total_individual_items
     amount = []
     basket.each do |item|
       item.each do |el|
-        amount << el if el['name'] == individual_item
+        amount << el if el['name'] == DISCOUNTED_ITEM
       end
     end
     amount.size
@@ -52,7 +47,7 @@ class Basket
     lavender_hearts =
       basket.each do |item|
         item.each do |el|
-          el['price'] = individual_price if el['name'] == individual_item
+          el['price'] = NEW_ITEM_PRICE if el['name'] == DISCOUNTED_ITEM
         end
       end
     lavender_hearts

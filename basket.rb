@@ -44,12 +44,10 @@ class Basket
   end
 
   def update_for_individual_discount
-    lavender_hearts =
-      basket.each do |item|
-        item.each do |el|
-          el['price'] = NEW_ITEM_PRICE if el['name'] == DISCOUNTED_ITEM
-        end
+    basket.each do |item|
+      item.each do |el|
+        el['price'] = NEW_ITEM_PRICE if el['name'] == DISCOUNTED_ITEM
       end
-    lavender_hearts
+    end
   end
 end

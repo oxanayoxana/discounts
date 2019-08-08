@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative 'retrieve_item.rb'
 require_relative 'basket.rb'
 require_relative 'retrieve_products.rb'
@@ -16,11 +18,19 @@ class PromotionalRules
   end
 
   def max_discount
-    over_max_price? && lavender_hearts? ? total_with_two_discounts : check_10_discount
+    two_discounts ? total_with_two_discounts : check_10_discount
   end
 
-  def check_lavender_discount
-    calculate_lavender_hearts >= 2 ? discount_lavender : total_no_discount
+  def two_discounts
+    return if over_max_price? && total_individual_items >= 2
+  end
+
+  def check_10_discount
+    basket_prices > MAX_PRICE ? discount_10_percent : check_individual_discount
+  end
+
+  def check_individual_discount
+    total_individual_items >= 2 ? individual_discount : total_no_discount
   end
 
   def basket_prices
@@ -32,41 +42,32 @@ class PromotionalRules
   end
 
   def discount
-    discount = (basket_prices*10)/100
+    (basket_prices * 10) / 100
   end
 
-  def check_10_discount
-    basket_prices > MAX_PRICE ? discount_10_percent : check_lavender_discount
+  def over_max_price?
+    return if basket_prices > MAX_PRICE
   end
 
-  def calculate_lavender_hearts
-    basket.calculate_lavender_hearts
+  def total_individual_items
+    basket.total_individual_items
   end
 
-  # def lavender_hearts?
-  #   return if calculate_lavender_hearts >= 2
-  # end
+  def update_for_individual_discount
+    basket.update_for_individual_discount
+  end
 
-  def update_lavender_hearts
-    basket.update_lavender_hearts
+  def individual_discount
+    update_for_individual_discount
     basket_prices
   end
 
-  def discount_lavender
-    update_lavender_hearts
-  end
-
   def total_with_two_discounts
-    discount_lavender
+    individual_discount
     discount_10_percent
   end
 
   def total_no_discount
     puts "total_no_discount: #{basket_prices}"
   end
-
-  def over_max_price?
-    return if basket_prices > MAX_PRICE 
-  end
 end
-

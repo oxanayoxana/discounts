@@ -1,9 +1,10 @@
+# frozen_string_literal: true
+
 require_relative 'basket.rb'
 require_relative 'promotional_rules.rb'
 require_relative 'retrieve_item.rb'
 
 class Checkout
-
   attr_reader :promotional_rules, :item, :basket_prices
 
   def initialize(promotional_rules)

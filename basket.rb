@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative 'retrieve_item.rb'
 
 class Basket
@@ -11,7 +13,7 @@ class Basket
   end
 
   def scan(product_code)
-    @my_item = item.get_item(product_code)
+    @my_item = item.scan(product_code)
     add_to_basket
   end
 
@@ -22,39 +24,37 @@ class Basket
 
   def set_basket_prices
     prices =
-    basket.map do |item|
-      item.map {|el| el["price"]}
-    end
+      basket.map do |item|
+        item.map { |el| el['price'] }
+      end
     @basket_prices = prices.flatten.reduce(:+).round(1)
   end
 
-  def calculate_lavender_hearts
+  def individual_item
+    'Lavender heart'
+  end
+
+  def individual_price
+    8.50
+  end
+
+  def total_individual_items
     amount = []
     basket.each do |item|
       item.each do |el|
-        if el["name"] == "Lavender heart"
-          amount << el
-        end
+        amount << el if el['name'] == individual_item
       end
     end
     amount.size
   end
 
-  def update_lavender_hearts
+  def update_for_individual_discount
     lavender_hearts =
-    basket.each do |item|
-      item.each do |el| 
-        if el["name"] == "Lavender heart"
-          el["price"] = 8.50
+      basket.each do |item|
+        item.each do |el|
+          el['price'] = individual_price if el['name'] == individual_item
         end
       end
-    end
     lavender_hearts
   end
 end
-
-# b = Basket.new
-# b.scan(1)
-# b.scan(2)
-# b.scan(3)
-# b.set_basket_prices
